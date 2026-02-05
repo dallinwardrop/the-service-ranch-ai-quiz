@@ -577,7 +577,7 @@
         // 3. Paste this code:
         /*
         function doPost(e) {
-            var sheet = SpreadsheetApp.openById('YOUR_SPREADSHEET_ID').getActiveSheet();
+            var sheet = SpreadsheetApp.openById('171tePecTfOyRP6pf_G4oXiY_PuCy-tq0Ndo-ZmPY-KI').getActiveSheet();
             var data = JSON.parse(e.postData.contents);
             
             sheet.appendRow([
@@ -596,7 +596,7 @@
         */
         // 4. Deploy as web app (Anyone can access)
         // 5. Copy the deployment URL and paste it below
-        const GOOGLE_SHEETS_URL = 'PASTE_YOUR_DEPLOYMENT_URL_HERE';
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwUx_gyunuuD1zBuZsX6_wmvMmhrXnqefK8RGhkPp73nFeBj1MDd8Gujg-PCWf7UWcPAw/exec';
         
         const questions = [
             {
@@ -910,7 +910,7 @@
             };
 
             // Only send if URL is configured
-            if (GOOGLE_SHEETS_URL && GOOGLE_SHEETS_URL !== 'PASTE_YOUR_DEPLOYMENT_URL_HERE') {
+            if (GOOGLE_SHEETS_URL && GOOGLE_SHEETS_URL !== 'https://script.google.com/macros/s/AKfycbwUx_gyunuuD1zBuZsX6_wmvMmhrXnqefK8RGhkPp73nFeBj1MDd8Gujg-PCWf7UWcPAw/exec') {
                 try {
                     await fetch(GOOGLE_SHEETS_URL, {
                         method: 'POST',
