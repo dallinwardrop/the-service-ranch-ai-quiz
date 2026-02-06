@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Ranch AI Readiness Assessment</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%233D2817'/%3E%3Ctext x='50' y='70' font-family='Arial, sans-serif' font-size='45' font-weight='bold' fill='%23D4A574' text-anchor='middle'%3ESR%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ranch-brown: #3D2817;
+            --ranch-tan: #D4A574;
+            --ranch-sage: #8B9B7E;
+            --ranch-rust: #B85C38;
+            --ranch-cream: #F5F1E8;
+            --ranch-charcoal: #2A2520;
+            --ranch-light: #FAF8F3;
+        }
+
+        body {
+            font-family: 'Karla', sans-serif;
+            background: linear-gradient(135deg, var(--ranch-cream) 0%, var(--ranch-light) 100%);
+            color: var(--ranch-charcoal);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--ranch-tan);
+        }
+
+        .logo {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--ranch-brown);
+            margin-bottom: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .tagline {
+            font-size: 0.75rem;
+            color: var(--ranch-rust);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 0;
+            display: none;
+        }
+
+        .brought-by {
+            font-size: 0.7rem;
+            color: var(--ranch-sage);
+            font-weight: 400;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.2rem;
+            color: var(--ranch-brown);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: var(--ranch-charcoal);
+            max-width: 700px;
+            margin: 0 auto 30px;
+            opacity: 0.85;
+        }
+
+        .intro-box {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(61, 40, 23, 0.1);
+            margin-bottom: 40px;
+            border-left: 5px solid var(--ranch-tan);
+        }
+
+        .intro-box h2 {
+            font-family: 'Crimson Pro', serif;
+            color: var(--ranch-brown);
+            margin-bottom: 15px;
+            font-size: 1.6rem;
+        }
+
+        .intro-box ul {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .intro-box li {
+            padding: 8px 0 8px 30px;
+            position: relative;
+            color: var(--ranch-charcoal);
+        }
+
+        .intro-box li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--ranch-sage);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .question-card {
+            background: white;
+            padding: 35px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(61, 40, 23, 0.08);
+            border-top: 4px solid var(--ranch-sage);
+            opacity: 0;
+            animation: slideIn 0.5s forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 8px 30px rgba(212, 165, 116, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 12px 40px rgba(212, 165, 116, 0.6);
+            }
+        }
+
+        @keyframes arrowBounce {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(5px);
+            }
+        }
+
+        .question-number {
+            font-size: 0.9rem;
+            color: var(--ranch-rust);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.4rem;
+            color: var(--ranch-brown);
+            margin-bottom: 25px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 18px 22px;
+            border: 2px solid #E5DFD4;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--ranch-light);
+            font-size: 1rem;
+        }
+
+        .option:hover {
+            border-color: var(--ranch-tan);
+            background: white;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            border-color: var(--ranch-sage);
+            background: white;
+            box-shadow: 0 2px 10px rgba(139, 155, 126, 0.2);
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            margin-top: 4px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--ranch-sage);
+        }
+
+        .btn {
+            background: var(--ranch-brown);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Karla', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: var(--ranch-rust);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(184, 92, 56, 0.3);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            gap: 20px;
+        }
+
+        .btn-secondary {
+            background: var(--ranch-sage);
+        }
+
+        .btn-secondary:hover {
+            background: var(--ranch-rust);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #E5DFD4;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--ranch-sage), var(--ranch-tan));
+            transition: width 0.4s ease;
+            border-radius: 10px;
+        }
+
+        #email-capture {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(61, 40, 23, 0.1);
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #email-capture h2 {
+            font-family: 'Crimson Pro', serif;
+            color: var(--ranch-brown);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        #email-capture input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            border: 2px solid #E5DFD4;
+            border-radius: 6px;
+            margin: 20px 0;
+            font-family: 'Karla', sans-serif;
+        }
+
+        #email-capture input:focus {
+            outline: none;
+            border-color: var(--ranch-sage);
+        }
+
+        #results {
+            animation: slideIn 0.6s forwards;
+        }
+
+        .score-header {
+            background: linear-gradient(135deg, var(--ranch-brown), var(--ranch-rust));
+            color: white;
+            padding: 50px 40px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 30px rgba(61, 40, 23, 0.2);
+        }
+
+        .score-number {
+            font-size: 5rem;
+            font-weight: 700;
+            font-family: 'Crimson Pro', serif;
+            margin-bottom: 10px;
+        }
+
+        .score-label {
+            font-size: 2rem;
+            font-family: 'Crimson Pro', serif;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .score-description {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .results-section {
+            background: white;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(61, 40, 23, 0.08);
+        }
+
+        .results-section h3 {
+            font-family: 'Crimson Pro', serif;
+            color: var(--ranch-brown);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--ranch-tan);
+            padding-bottom: 15px;
+        }
+
+        .cost-highlight {
+            background: linear-gradient(135deg, #FFF5E6, #FFE8CC);
+            padding: 30px;
+            border-radius: 8px;
+            border-left: 5px solid var(--ranch-rust);
+            margin: 25px 0;
+        }
+
+        .cost-highlight .big-number {
+            font-size: 3rem;
+            font-family: 'Crimson Pro', serif;
+            font-weight: 700;
+            color: var(--ranch-rust);
+            margin-bottom: 10px;
+        }
+
+        .snapshot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .snapshot-item {
+            padding: 20px;
+            background: var(--ranch-light);
+            border-radius: 6px;
+            border-left: 4px solid var(--ranch-sage);
+        }
+
+        .snapshot-item.critical {
+            border-left-color: var(--ranch-rust);
+            background: #FFF5F0;
+        }
+
+        .snapshot-item.warning {
+            border-left-color: var(--ranch-tan);
+            background: #FFF8ED;
+        }
+
+        .snapshot-item .emoji {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .snapshot-item .label {
+            font-weight: 600;
+            color: var(--ranch-brown);
+            margin-bottom: 5px;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, var(--ranch-brown), var(--ranch-charcoal));
+            color: white;
+            padding: 50px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 40px;
+            box-shadow: 0 8px 30px rgba(61, 40, 23, 0.3);
+        }
+
+        .cta-box h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-box .benefits {
+            text-align: left;
+            max-width: 600px;
+            margin: 30px auto;
+        }
+
+        .cta-box .benefits li {
+            padding: 10px 0 10px 35px;
+            position: relative;
+            font-size: 1.1rem;
+        }
+
+        .cta-box .benefits li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--ranch-tan);
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn-cta-primary {
+            background: linear-gradient(135deg, var(--ranch-tan) 0%, #E8B968 100%);
+            color: var(--ranch-brown);
+            font-weight: 800;
+            font-size: 1.2rem;
+            padding: 20px 45px;
+            border: 3px solid var(--ranch-brown);
+            box-shadow: 0 8px 30px rgba(212, 165, 116, 0.4);
+            animation: pulse 2s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-cta-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-cta-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-cta-primary:hover {
+            background: linear-gradient(135deg, var(--ranch-rust) 0%, #C84A2A 100%);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(184, 92, 56, 0.6);
+            animation: none;
+        }
+
+        .btn-cta-primary .arrow {
+            display: inline-block;
+            margin-left: 8px;
+            animation: arrowBounce 1s infinite;
+        }
+
+        .btn-cta-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-cta-secondary:hover {
+            background: white;
+            color: var(--ranch-brown);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Sticky CTA Bar - Hormozi style */
+        .sticky-cta {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, var(--ranch-brown) 0%, var(--ranch-charcoal) 100%);
+            padding: 20px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .sticky-cta.show {
+            transform: translateY(0);
+        }
+
+        .sticky-cta-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .sticky-cta-text {
+            color: white;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .sticky-cta-text h4 {
+            margin: 0 0 5px 0;
+            font-size: 1.3rem;
+            font-family: 'Crimson Pro', serif;
+        }
+
+        .sticky-cta-text p {
+            margin: 0;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .sticky-cta-button {
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .question-card {
+                padding: 25px;
+            }
+
+            .score-number {
+                font-size: 3.5rem;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="brought-by">Brought to you by</div>
+            <div class="logo">THE SERVICE RANCH</div>
+        </header>
+
+        <!-- Introduction -->
+        <div id="intro" class="intro-box">
+            <h1>Your Competitors Are Using AI to Steal Your Customers</h1>
+            <p class="subtitle">While you're manually entering timesheets and writing estimates from scratch, they're responding to leads in 90 seconds and bidding jobs in 5 minutes. Find out exactly how far behind you are—and how to catch up fast.</p>
+            
+            <div style="background: linear-gradient(135deg, #FFF5E6, #FFE8CC); padding: 25px; border-radius: 8px; border-left: 5px solid var(--ranch-rust); margin: 25px 0;">
+                <div style="text-align: center;">
+                    <div style="font-size: 1.1rem; font-weight: 700; color: var(--ranch-rust); margin-bottom: 10px;">⚠️ REALITY CHECK</div>
+                    <p style="font-size: 1rem; line-height: 1.6; margin: 0;">
+                        It's February 2026. If your business isn't using AI for estimating, customer communication, and operations, 
+                        you're competing with one hand tied behind your back. The gap is widening every single day.
+                    </p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin: 35px 0;">
+                <button class="btn" onclick="startQuiz()" style="font-size: 1.4rem; padding: 25px 65px; box-shadow: 0 6px 25px rgba(184, 92, 56, 0.3); animation: pulse 2s infinite; text-transform: none; font-weight: 700;">
+                    Show Me Where I'm Falling Behind <span style="display: inline-block; margin-left: 8px; animation: arrowBounce 1s infinite;">→</span>
+                </button>
+                <div style="margin-top: 15px; font-size: 0.95rem; color: var(--ranch-charcoal); opacity: 0.7; font-weight: 600;">⚡ 5 minutes • 100% Free • Get your score + roadmap instantly</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 35px 0;">
+                <div style="text-align: center; padding: 20px; background: var(--ranch-light); border-radius: 8px;">
+                    <div style="font-size: 2.5rem; margin-bottom: 10px;">🔍</div>
+                    <div style="font-weight: 600; color: var(--ranch-brown);">Your AI Blind Spots</div>
+                    <div style="font-size: 0.9rem; color: var(--ranch-charcoal); opacity: 0.8;">The areas you don't even know you're losing</div>
+                </div>
+                <div style="text-align: center; padding: 20px; background: var(--ranch-light); border-radius: 8px;">
+                    <div style="font-size: 2.5rem; margin-bottom: 10px;">⚡</div>
+                    <div style="font-weight: 600; color: var(--ranch-brown);">Quick Win Opportunities</div>
+                    <div style="font-size: 0.9rem; color: var(--ranch-charcoal); opacity: 0.8;">AI tools you can implement THIS WEEK</div>
+                </div>
+                <div style="text-align: center; padding: 20px; background: var(--ranch-light); border-radius: 8px;">
+                    <div style="font-size: 2.5rem; margin-bottom: 10px;">🗺️</div>
+                    <div style="font-weight: 600; color: var(--ranch-brown);">90-Day Catch-Up Plan</div>
+                    <div style="font-size: 0.9rem; color: var(--ranch-charcoal); opacity: 0.8;">Step-by-step roadmap to AI parity</div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 25px; padding: 15px; background: linear-gradient(135deg, #FFF5E6, #FFE8CC); border-radius: 6px;">
+                <div style="font-size: 0.95rem; color: var(--ranch-charcoal);"><strong>For landscaping companies doing $3M-$15M annually</strong></div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div id="progress-container" class="hidden">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+        </div>
+
+        <!-- Quiz Container -->
+        <div id="quiz-container" class="hidden"></div>
+
+        <!-- Navigation Buttons -->
+        <div id="nav-buttons" class="nav-buttons hidden">
+            <button class="btn btn-secondary" id="prev-btn" onclick="prevQuestion()">Previous</button>
+            <button class="btn" id="next-btn" onclick="nextQuestion()">Next Question</button>
+        </div>
+
+        <!-- Email Capture -->
+        <div id="email-capture" class="hidden">
+            <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+                <h2 style="font-family: 'Crimson Pro', serif; color: var(--ranch-brown); font-size: 2rem; margin-bottom: 15px;">
+                    🎯 One Last Step To See Your Results
+                </h2>
+                <p style="font-size: 1.1rem; margin-bottom: 25px; line-height: 1.6;">
+                    Enter your email to unlock your personalized AI Readiness Score + free implementation roadmap (worth $3,800)
+                </p>
+                
+                <div style="background: linear-gradient(135deg, #FFF5E6, #FFE8CC); padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid var(--ranch-rust);">
+                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">
+                        <strong>⚡ You'll get instant access to:</strong><br>
+                        ✓ Your AI readiness score<br>
+                        ✓ Specific gaps costing you customers<br>
+                        ✓ Top 3 quick wins to implement this week
+                    </p>
+                </div>
+                
+                <input type="email" id="email-input" placeholder="your.email@company.com" required onkeypress="if(event.key==='Enter') submitEmail()" style="font-size: 1.1rem; padding: 18px; width: 100%; box-sizing: border-box; border: 2px solid #E5DFD4; border-radius: 6px; margin: 0 0 15px 0;">
+                <button class="btn" id="submit-email-btn" onclick="submitEmail()" style="margin-top: 0; width: 100%; font-size: 1.2rem; padding: 20px; text-transform: none; cursor: pointer;">
+                    Show Me My Results <span style="display: inline-block; margin-left: 8px;">→</span>
+                </button>
+                
+                <p style="font-size: 0.85rem; margin-top: 15px; opacity: 0.7;">
+                    🔒 No spam. Your info stays private. Unsubscribe anytime.
+                </p>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="hidden"></div>
+    </div>
+
+    <!-- Sticky Bottom CTA Bar -->
+    <div id="sticky-cta" class="sticky-cta">
+        <div class="sticky-cta-content">
+            <div class="sticky-cta-text">
+                <h4>🚀 Ready to Close Your AI Gap?</h4>
+                <p>Get your free strategy session + $3,800 implementation roadmap</p>
+            </div>
+            <div class="sticky-cta-button">
+                <button class="btn btn-cta-primary" onclick="window.location.href='https://calendly.com/dallin-wardrop-vpij/30min'" style="font-size: 1.2rem; padding: 18px 40px; margin: 0; text-transform: none;">
+                    Book My Free Call <span class="arrow">→</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // GOOGLE SHEETS CONFIGURATION
+        // Instructions to set this up:
+        // 1. Go to https://script.google.com
+        // 2. Create a new project
+        // 3. Paste this code:
+        /*
+        function doPost(e) {
+            var sheet = SpreadsheetApp.openById('YOUR_SPREADSHEET_ID').getActiveSheet();
+            var data = JSON.parse(e.postData.contents);
+            
+            sheet.appendRow([
+                new Date(),
+                data.email,
+                data.totalScore,
+                data.rating,
+                JSON.stringify(data.answers),
+                JSON.stringify(data.categoryScores)
+            ]);
+            
+            return ContentService.createTextOutput(JSON.stringify({success: true}))
+                .setMimeType(ContentService.MimeType.JSON);
+        }
+        */
+        // 4. Deploy as web app (Anyone can access)
+        // 5. Copy the deployment URL and paste it below
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwUx_gyunuuD1zBuZsX6_wmvMmhrXnqefK8RGhkPp73nFeBj1MDd8Gujg-PCWf7UWcPAw/exec';
+        
+        const questions = [
+            {
+                id: 1,
+                category: "AI for Customer Communication",
+                text: "How is AI currently helping with customer communication in your business?",
+                type: "single",
+                options: [
+                    { text: "Not using AI at all", value: 1 },
+                    { text: "Exploring options but not implemented", value: 2 },
+                    { text: "Using basic email templates or chatbots", value: 3 },
+                    { text: "AI helps draft responses and follow-ups", value: 4 },
+                    { text: "AI fully automates routine communications and scheduling", value: 5 }
+                ]
+            },
+            {
+                id: 2,
+                category: "AI for Estimating",
+                text: "For creating estimates and proposals, we currently:",
+                type: "single",
+                options: [
+                    { text: "Do everything manually from scratch", value: 1 },
+                    { text: "Use templates but manually adjust everything", value: 2 },
+                    { text: "Have some automated pricing but mostly manual", value: 3 },
+                    { text: "AI suggests pricing based on historical data", value: 4 },
+                    { text: "AI generates complete estimates from site photos and specs", value: 5 }
+                ]
+            },
+            {
+                id: 3,
+                category: "AI for Scheduling & Routing",
+                text: "Our crew scheduling and route planning is:",
+                type: "single",
+                options: [
+                    { text: "Fully manual - we plan it ourselves", value: 1 },
+                    { text: "Basic software but we make all decisions", value: 2 },
+                    { text: "Software helps but still requires heavy manual input", value: 3 },
+                    { text: "AI suggests optimal routes and schedules", value: 4 },
+                    { text: "AI dynamically optimizes routes and crew assignments in real-time", value: 5 }
+                ]
+            },
+            {
+                id: 4,
+                category: "AI for Financial Management",
+                text: "AI's role in our invoicing, collections, and financial reporting:",
+                type: "single",
+                options: [
+                    { text: "Zero - all manual processes", value: 1 },
+                    { text: "Software tracks it but no AI", value: 2 },
+                    { text: "Some automated reminders but we manage everything", value: 3 },
+                    { text: "AI helps predict cash flow and flag issues", value: 4 },
+                    { text: "AI automates invoicing, collections follow-up, and financial forecasting", value: 5 }
+                ]
+            },
+            {
+                id: 5,
+                category: "AI for Operations",
+                text: "For crew time tracking and job costing, we use:",
+                type: "single",
+                options: [
+                    { text: "Paper timesheets - manual entry", value: 1 },
+                    { text: "Digital time tracking but manually reconciled", value: 2 },
+                    { text: "Automated time tracking, manual job cost analysis", value: 3 },
+                    { text: "AI helps analyze job profitability and crew efficiency", value: 4 },
+                    { text: "AI automatically tracks time, calculates costs, and alerts us to budget overruns", value: 5 }
+                ]
+            },
+            {
+                id: 6,
+                category: "AI for Business Development",
+                text: "AI helps us with sales and business development by:",
+                type: "single",
+                options: [
+                    { text: "Doesn't - we do all BD manually", value: 1 },
+                    { text: "CRM tracks leads but no AI", value: 2 },
+                    { text: "Basic automation for email sequences", value: 3 },
+                    { text: "AI identifies best prospects and suggests outreach timing", value: 4 },
+                    { text: "AI automatically qualifies leads, personalizes outreach, and predicts close probability", value: 5 }
+                ]
+            },
+            {
+                id: 7,
+                category: "AI for Customer Onboarding",
+                text: "When we bring on a new customer, AI:",
+                type: "single",
+                options: [
+                    { text: "Not involved - fully manual onboarding", value: 1 },
+                    { text: "We have digital forms but manual processing", value: 2 },
+                    { text: "Some automated emails and document collection", value: 3 },
+                    { text: "AI guides customers through onboarding and populates systems", value: 4 },
+                    { text: "AI fully automates intake, documents, setup, and first job scheduling", value: 5 }
+                ]
+            },
+            {
+                id: 8,
+                category: "AI for Quality & Safety",
+                text: "We use AI to monitor quality control and safety by:",
+                type: "single",
+                options: [
+                    { text: "Not using AI for this", value: 1 },
+                    { text: "Manual checklists only", value: 2 },
+                    { text: "Digital checklists but manual review", value: 3 },
+                    { text: "AI analyzes job photos for quality issues", value: 4 },
+                    { text: "AI monitors job sites via photos/sensors and flags safety or quality concerns in real-time", value: 5 }
+                ]
+            },
+            {
+                id: 9,
+                category: "AI Implementation Readiness",
+                text: "When it comes to adopting AI tools, our business is currently: (Select all that apply)",
+                type: "multiple",
+                options: [
+                    { text: "Not sure where to start with AI", value: 1 },
+                    { text: "Researching AI options but haven't implemented anything", value: 1 },
+                    { text: "Tried one AI tool but didn't stick with it", value: 1 },
+                    { text: "Using 1-2 AI tools successfully", value: 1 },
+                    { text: "Using AI across multiple business functions", value: 1 },
+                    { text: "Staff is resistant to new technology", value: 1 },
+                    { text: "Our data is too messy to use AI effectively", value: 1 },
+                    { text: "We have a dedicated person managing our tech stack", value: 1 },
+                    { text: "None of these", value: 0 }
+                ]
+            },
+            {
+                id: 10,
+                category: "AI Knowledge & Vision",
+                text: "My understanding of how AI could help my landscaping business is:",
+                type: "single",
+                options: [
+                    { text: "Honestly, pretty limited - I hear about it but don't know specifics", value: 1 },
+                    { text: "I know AI exists but not sure what's realistic for my business", value: 2 },
+                    { text: "I understand some AI applications but not the full potential", value: 3 },
+                    { text: "I have a clear vision for 2-3 AI use cases", value: 4 },
+                    { text: "I have a comprehensive AI strategy and am actively implementing it", value: 5 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+        let userEmail = "";
+
+        function startQuiz() {
+            document.getElementById('intro').classList.add('hidden');
+            document.getElementById('progress-container').classList.remove('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            document.getElementById('nav-buttons').classList.remove('hidden');
+            showQuestion(0);
+        }
+
+        function showQuestion(index) {
+            const question = questions[index];
+            const container = document.getElementById('quiz-container');
+            
+            let optionsHTML = '';
+            if (question.type === 'single') {
+                optionsHTML = question.options.map((opt, i) => `
+                    <div class="option" onclick="selectOption(${index}, ${i}, ${opt.value})">
+                        ${opt.text}
+                    </div>
+                `).join('');
+            } else {
+                optionsHTML = question.options.map((opt, i) => `
+                    <label class="option checkbox-option">
+                        <input type="checkbox" onchange="selectMultiple(${index}, ${i}, ${opt.value}, this.checked)">
+                        <span>${opt.text}</span>
+                    </label>
+                `).join('');
+            }
+
+            container.innerHTML = `
+                <div class="question-card">
+                    <div class="question-number">Question ${index + 1} of ${questions.length}</div>
+                    <div class="question-text">${question.text}</div>
+                    <div class="options" id="options-${index}">
+                        ${optionsHTML}
+                    </div>
+                </div>
+            `;
+
+            // Update progress
+            const progress = ((index + 1) / questions.length) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+
+            // Update navigation buttons
+            document.getElementById('prev-btn').style.display = index === 0 ? 'none' : 'block';
+            document.getElementById('next-btn').textContent = 
+                index === questions.length - 1 ? 'See My Results' : 'Next Question';
+
+            // Restore previous answer if exists
+            if (answers[index] !== undefined) {
+                if (question.type === 'single') {
+                    const selectedIndex = question.options.findIndex(opt => opt.value === answers[index]);
+                    if (selectedIndex !== -1) {
+                        document.querySelectorAll(`#options-${index} .option`)[selectedIndex].classList.add('selected');
+                    }
+                } else {
+                    const checkboxes = document.querySelectorAll(`#options-${index} input[type="checkbox"]`);
+                    answers[index].forEach((val, i) => {
+                        if (val > 0) checkboxes[i].checked = true;
+                    });
+                }
+            }
+        }
+
+        function selectOption(questionIndex, optionIndex, value) {
+            answers[questionIndex] = value;
+            document.querySelectorAll(`#options-${questionIndex} .option`).forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            document.querySelectorAll(`#options-${questionIndex} .option`)[optionIndex].classList.add('selected');
+        }
+
+        function selectMultiple(questionIndex, optionIndex, value, checked) {
+            if (!answers[questionIndex]) {
+                answers[questionIndex] = new Array(questions[questionIndex].options.length).fill(0);
+            }
+            
+            // If "None of these" is selected
+            if (optionIndex === questions[questionIndex].options.length - 1 && checked) {
+                answers[questionIndex] = new Array(questions[questionIndex].options.length).fill(0);
+                answers[questionIndex][optionIndex] = value;
+                document.querySelectorAll(`#options-${questionIndex} input[type="checkbox"]`).forEach((cb, i) => {
+                    if (i !== optionIndex) cb.checked = false;
+                });
+            } else {
+                // Uncheck "None of these" if anything else is selected
+                if (checked) {
+                    const noneCheckbox = document.querySelectorAll(`#options-${questionIndex} input[type="checkbox"]`)[questions[questionIndex].options.length - 1];
+                    noneCheckbox.checked = false;
+                    answers[questionIndex][questions[questionIndex].options.length - 1] = 0;
+                }
+                answers[questionIndex][optionIndex] = checked ? value : 0;
+            }
+        }
+
+        function nextQuestion() {
+            // Check if question is answered
+            const currentQ = questions[currentQuestion];
+            
+            if (currentQ.type === 'single') {
+                // For single choice, answer must exist and not be undefined
+                if (answers[currentQuestion] === undefined) {
+                    alert('Please answer the current question before proceeding.');
+                    return;
+                }
+            } else {
+                // For multiple choice, answer array must exist (means user clicked something)
+                // Even if they selected "None of these" (all zeros), that's still a valid answer
+                if (!answers[currentQuestion] || !Array.isArray(answers[currentQuestion])) {
+                    alert('Please select at least one option before proceeding.');
+                    return;
+                }
+            }
+
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            } else {
+                showEmailCapture();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        function showEmailCapture() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('nav-buttons').classList.add('hidden');
+            document.getElementById('progress-container').classList.add('hidden');
+            document.getElementById('email-capture').classList.remove('hidden');
+        }
+
+        function submitEmail() {
+            console.log('submitEmail called');
+            const email = document.getElementById('email-input').value;
+            console.log('Email value:', email);
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            userEmail = email;
+            
+            // Send to Google Sheets
+            sendToGoogleSheets();
+            
+            showResults();
+        }
+
+        async function sendToGoogleSheets() {
+            const { totalScore, categoryScores } = calculateScore();
+            const maxScore = 50;
+            const percentage = (totalScore / maxScore) * 100;
+
+            let rating;
+            if (percentage >= 85) {
+                rating = "Ranch Boss";
+            } else if (percentage >= 70) {
+                rating = "Trail Boss";
+            } else if (percentage >= 55) {
+                rating = "Working the Ranch";
+            } else if (percentage >= 40) {
+                rating = "All Hands on Deck";
+            } else {
+                rating = "Lost in the Weeds";
+            }
+
+
+            const payload = {
+                email: userEmail,
+                totalScore: totalScore,
+                rating: rating,
+                answers: answers,
+                categoryScores: categoryScores,
+                timestamp: new Date().toISOString()
+            };
+
+            // Only send if URL is configured
+            if (GOOGLE_SHEETS_URL && GOOGLE_SHEETS_URL !== 'PASTE_YOUR_DEPLOYMENT_URL_HERE' && !GOOGLE_SHEETS_URL.includes('PASTE_YOUR')) {
+                try {
+                    await fetch(GOOGLE_SHEETS_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                    console.log('Data sent to Google Sheets successfully');
+                } catch (error) {
+                    console.error('Error sending to Google Sheets:', error);
+                }
+            } else {
+                console.log('Google Sheets not configured. Data:', payload);
+            }
+        }
+
+        function calculateScore() {
+            let totalScore = 0;
+            let categoryScores = {};
+
+            questions.forEach((q, i) => {
+                if (Array.isArray(answers[i])) {
+                    const sum = answers[i].reduce((a, b) => a + b, 0);
+                    totalScore += Math.min(sum, 5); // Cap at 5 for multiple choice
+                } else {
+                    totalScore += answers[i];
+                }
+
+                if (!categoryScores[q.category]) {
+                    categoryScores[q.category] = { score: 0, max: 0 };
+                }
+                if (Array.isArray(answers[i])) {
+                    categoryScores[q.category].score += Math.min(answers[i].reduce((a, b) => a + b, 0), 5);
+                } else {
+                    categoryScores[q.category].score += answers[i];
+                }
+                categoryScores[q.category].max += 5;
+            });
+
+            return { totalScore, categoryScores };
+        }
+
+        function showResults() {
+            document.getElementById('email-capture').classList.add('hidden');
+            
+            const { totalScore, categoryScores } = calculateScore();
+            const maxScore = 50;
+            const percentage = (totalScore / maxScore) * 100;
+
+            let rating, ratingDescription;
+            if (percentage >= 85) {
+                rating = "Ranch Boss";
+                ratingDescription = "AI is driving your operations—you're ahead of 95% of landscapers";
+            } else if (percentage >= 70) {
+                rating = "Trail Boss";
+                ratingDescription = "Strong AI adoption but more opportunities to automate";
+            } else if (percentage >= 55) {
+                rating = "Working the Ranch";
+                ratingDescription = "Some AI tools in place, but manual work still dominates";
+            } else if (percentage >= 40) {
+                rating = "All Hands on Deck";
+                ratingDescription = "AI isn't helping much—competitors are pulling ahead";
+            } else {
+                rating = "Lost in the Weeds";
+                ratingDescription = "AI hasn't touched your business yet—time to catch up";
+            }
+
+
+            // These calculations are kept for potential future use but not currently displayed
+            // const adminHours = 6 - answers[5];
+            // const dataEntryCount = answers[8] ? (Array.isArray(answers[8]) ? answers[8].reduce((a,b) => a+b, 0) : 0) : 0;
+            // const doubleEntryScore = 6 - answers[3];
+            // const estimatedAnnualLoss = 75000 + (adminHours * 15000) + (dataEntryCount * 8000) + (doubleEntryScore * 12000);
+
+
+            const resultsHTML = `
+                <div class="score-header">
+                    <div style="font-size: 1.2rem; opacity: 0.9; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px;">Your Score</div>
+                    <div class="score-number">${totalScore}/<span style="font-size: 3rem;">50</span></div>
+                    <div class="score-label">"${rating}"</div>
+                    <div class="score-description">${ratingDescription}</div>
+                    
+                    <div style="margin-top: 35px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.2);">
+                        <div style="font-size: 1.1rem; margin-bottom: 15px; opacity: 0.95;">Want to know exactly how to fix this?</div>
+                        <button class="btn btn-cta-primary" onclick="window.location.href='https://calendly.com/dallin-wardrop-vpij/30min'" style="font-size: 1.3rem; padding: 20px 45px; margin: 0; text-transform: none;">
+                            Get My Free AI Roadmap <span class="arrow">→</span>
+                        </button>
+                        <div style="margin-top: 12px; font-size: 0.9rem; opacity: 0.85;">30-min strategy call • $3,800 value • Completely free</div>
+                    </div>
+                </div>
+
+                <div class="results-section">
+                    <h3>🤖 Your AI Readiness Gaps</h3>
+                    <p style="font-size: 1.05rem; line-height: 1.8; margin-bottom: 25px;">
+                        Based on your responses, here's where your business is falling behind on AI adoption compared to industry leaders in 2026:
+                    </p>
+
+                    <div style="display: grid; gap: 20px; margin-top: 25px;">
+                        ${totalScore < 25 ? `
+                        <div style="padding: 20px; background: var(--ranch-light); border-radius: 8px; border-left: 4px solid var(--ranch-rust);">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                <span style="font-size: 1.8rem;">🚨</span>
+                                <strong style="color: var(--ranch-rust); font-size: 1.1rem;">AI Desert - Critical Gap</strong>
+                            </div>
+                            <p style="margin-left: 44px; color: var(--ranch-charcoal); opacity: 0.9;">Your business has minimal AI adoption. Competitors using AI are operating 40-60% more efficiently in key areas like estimating, scheduling, and customer communication.</p>
+                        </div>
+                        ` : ''}
+                        
+                        ${categoryScores['AI for Customer Communication'] && categoryScores['AI for Customer Communication'].score <= 2 ? `
+                        <div style="padding: 20px; background: var(--ranch-light); border-radius: 8px; border-left: 4px solid var(--ranch-rust);">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                <span style="font-size: 1.8rem;">💬</span>
+                                <strong style="color: var(--ranch-rust); font-size: 1.1rem;">Customer Communication Gap</strong>
+                            </div>
+                            <p style="margin-left: 44px; color: var(--ranch-charcoal); opacity: 0.9;">Leading companies use AI to automate 70% of customer communications, respond 10x faster, and never miss follow-ups.</p>
+                        </div>
+                        ` : ''}
+
+                        ${categoryScores['AI for Estimating'] && categoryScores['AI for Estimating'].score <= 2 ? `
+                        <div style="padding: 20px; background: var(--ranch-light); border-radius: 8px; border-left: 4px solid var(--ranch-rust);">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                <span style="font-size: 1.8rem;">📋</span>
+                                <strong style="color: var(--ranch-rust); font-size: 1.1rem;">Estimating Efficiency Gap</strong>
+                            </div>
+                            <p style="margin-left: 44px; color: var(--ranch-charcoal); opacity: 0.9;">AI-powered estimating cuts bid time by 70% and improves accuracy by 30%, helping you win more profitable work.</p>
+                        </div>
+                        ` : ''}
+
+                        ${categoryScores['AI for Business Development'] && categoryScores['AI for Business Development'].score <= 2 ? `
+                        <div style="padding: 20px; background: var(--ranch-light); border-radius: 8px; border-left: 4px solid var(--ranch-rust);">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                <span style="font-size: 1.8rem;">📈</span>
+                                <strong style="color: var(--ranch-rust); font-size: 1.1rem;">Sales Pipeline Gap</strong>
+                            </div>
+                            <p style="margin-left: 44px; color: var(--ranch-charcoal); opacity: 0.9;">Top performers use AI to identify high-value prospects, personalize outreach, and convert 2-3x more leads with the same effort.</p>
+                        </div>
+                        ` : ''}
+
+                        ${categoryScores['AI for Operations'] && categoryScores['AI for Operations'].score <= 2 ? `
+                        <div style="padding: 20px; background: var(--ranch-light); border-radius: 8px; border-left: 4px solid var(--ranch-rust);">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                <span style="font-size: 1.8rem;">⚙️</span>
+                                <strong style="color: var(--ranch-rust); font-size: 1.1rem;">Operations Tracking Gap</strong>
+                            </div>
+                            <p style="margin-left: 44px; color: var(--ranch-charcoal); opacity: 0.9;">AI-driven job costing and time tracking give instant visibility into profitability and help catch budget overruns before they happen.</p>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+
+                <div class="results-section">
+                    <h3>📊 Your Readiness Snapshot</h3>
+                    <div class="snapshot-grid">
+                        ${Object.entries(categoryScores).map(([category, data]) => {
+                            const catPercentage = (data.score / data.max) * 100;
+                            let emoji, cssClass, status;
+                            if (catPercentage < 40) {
+                                emoji = "🚨";
+                                cssClass = "critical";
+                                status = "Critical";
+                            } else if (catPercentage < 60) {
+                                emoji = "⚠️";
+                                cssClass = "warning";
+                                status = "Needs Work";
+                            } else {
+                                emoji = "✅";
+                                cssClass = "";
+                                status = "Strong";
+                            }
+                            return `
+                                <div class="snapshot-item ${cssClass}">
+                                    <div class="emoji">${emoji}</div>
+                                    <div class="label">${category}</div>
+                                    <div style="font-size: 1.3rem; font-weight: 700; color: var(--ranch-brown); margin: 5px 0;">${data.score}/${data.max}</div>
+                                    <div style="font-size: 0.85rem; color: var(--ranch-rust); font-weight: 600; text-transform: uppercase;">${status}</div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <div class="results-section">
+                    <h3>⚠️ The Brutal Truth About AI in Landscaping (February 2026)</h3>
+                    
+                    <div style="background: linear-gradient(135deg, #FFF5E6, #FFE8CC); padding: 30px; border-radius: 8px; border-left: 5px solid var(--ranch-rust); margin-bottom: 30px;">
+                        <p style="font-size: 1.15rem; line-height: 1.8; margin: 0; font-weight: 600; color: var(--ranch-brown);">
+                            The gap between AI-adopters and non-adopters in the landscaping industry isn't just widening—it's becoming unbridgeable.
+                        </p>
+                    </div>
+
+                    <div style="display: grid; gap: 20px; margin: 25px 0;">
+                        <div style="padding: 25px; background: white; border-radius: 8px; border-left: 4px solid var(--ranch-sage);">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+                                <span style="font-size: 2rem;">⚡</span>
+                                <strong style="font-size: 1.2rem; color: var(--ranch-brown);">Response Time</strong>
+                            </div>
+                            <p style="margin-left: 44px; font-size: 1.05rem; line-height: 1.6; color: var(--ranch-charcoal);">
+                                AI-enabled companies respond to leads in <strong>under 2 minutes.</strong> Manual companies? 4-6 hours average. 
+                                By the time you call back, the AI company already sent a personalized proposal.
+                            </p>
+                        </div>
+
+                        <div style="padding: 25px; background: white; border-radius: 8px; border-left: 4px solid var(--ranch-sage);">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+                                <span style="font-size: 2rem;">📋</span>
+                                <strong style="font-size: 1.2rem; color: var(--ranch-brown);">Estimating Speed</strong>
+                            </div>
+                            <p style="margin-left: 44px; font-size: 1.05rem; line-height: 1.6; color: var(--ranch-charcoal);">
+                                AI cuts bid creation time from <strong>2 hours to 15 minutes.</strong> That means your competitors can bid 
+                                on 8x more jobs with the same effort. You're literally losing opportunities you never even knew existed.
+                            </p>
+                        </div>
+
+                        <div style="padding: 25px; background: white; border-radius: 8px; border-left: 4px solid var(--ranch-sage);">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+                                <span style="font-size: 2rem;">💰</span>
+                                <strong style="font-size: 1.2rem; color: var(--ranch-brown);">Administrative Burden</strong>
+                            </div>
+                            <p style="margin-left: 44px; font-size: 1.05rem; line-height: 1.6; color: var(--ranch-charcoal);">
+                                Top AI-adopters reduced admin overhead by <strong>60-70%.</strong> They're reinvesting that money into sales, 
+                                marketing, and crew training. You're still paying someone to manually enter timesheets.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="background: #2A2520; color: white; padding: 30px; border-radius: 8px; margin-top: 30px;">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 10px;">HERE'S WHAT THIS MEANS FOR YOU:</div>
+                        </div>
+                        <div style="font-size: 1.1rem; line-height: 1.9; opacity: 0.95;">
+                            <p style="margin-bottom: 15px;">
+                                ⏰ <strong>If you start implementing AI TODAY,</strong> you can catch up to the leaders in 90 days.
+                            </p>
+                            <p style="margin-bottom: 15px;">
+                                ⚠️ <strong>If you wait 6 months,</strong> the gap becomes nearly impossible to close without massive investment.
+                            </p>
+                            <p style="margin: 0;">
+                                🚨 <strong>If you wait a year,</strong> you'll be competing for scraps while AI-enabled companies dominate your market.
+                            </p>
+                        </div>
+                    </div>
+
+                    ${percentage < 70 ? `
+                    <div style="background: #E8F5E9; padding: 25px; border-radius: 6px; margin-top: 25px; border-left: 4px solid var(--ranch-sage);">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+                            <span style="font-size: 2rem;">💡</span>
+                            <strong style="color: var(--ranch-brown); font-size: 1.2rem;">Your Fastest Path To Catch Up</strong>
+                        </div>
+                        <p style="line-height: 1.8; margin-left: 44px; font-size: 1.05rem;">
+                            Based on your score, you need to start with AI for customer communication and estimating. These tools show 
+                            ROI in 2-4 weeks and don't require ripping out existing systems. Get these two working, THEN expand to operations and scheduling.
+                        </p>
+                    </div>
+                    ` : `
+                    <div style="background: #E8F5E9; padding: 25px; border-radius: 6px; margin-top: 25px; border-left: 4px solid var(--ranch-sage);">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+                            <span style="font-size: 2rem;">🌟</span>
+                            <strong style="color: var(--ranch-brown); font-size: 1.2rem;">You're In The Top 15%</strong>
+                        </div>
+                        <p style="line-height: 1.8; margin-left: 44px; font-size: 1.05rem;">
+                            You've already got solid AI adoption. Now it's about going deeper: predictive maintenance scheduling, 
+                            dynamic pricing based on demand, AI-powered upselling at point of sale. This is where you pull away from the pack completely.
+                        </p>
+                    </div>
+                    `}
+                </div>
+
+                <div class="cta-box">
+                    <h3>🚀 Here's What Happens Next (And What You Get For Free)</h3>
+                    
+                    <p style="font-size: 1.2rem; margin-bottom: 30px; font-weight: 600; line-height: 1.6;">
+                        Book a 30-minute AI Strategy Session and I'll personally walk you through a complete AI implementation roadmap 
+                        for your business. No fluff, no sales pitch—just actionable strategy you can start executing immediately.
+                    </p>
+
+                    <div style="background: rgba(255, 255, 255, 0.15); padding: 30px; border-radius: 8px; margin: 30px 0; border: 2px solid var(--ranch-tan);">
+                        <div style="text-align: center; margin-bottom: 25px;">
+                            <div style="font-size: 1rem; color: var(--ranch-tan); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">HERE'S EVERYTHING YOU GET:</div>
+                        </div>
+                        
+                        <div style="display: grid; gap: 15px;">
+                            <div style="display: flex; align-items: start; gap: 15px;">
+                                <div style="font-size: 1.5rem; flex-shrink: 0;">✅</div>
+                                <div>
+                                    <strong style="font-size: 1.1rem;">Your AI Readiness Deep-Dive Review</strong>
+                                    <div style="font-size: 0.95rem; opacity: 0.9; margin-top: 5px;">We'll go through your assessment results in detail and identify your top 3 AI blind spots</div>
+                                    <div style="font-size: 0.85rem; color: var(--ranch-tan); margin-top: 3px;">Value: $500</div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; align-items: start; gap: 15px;">
+                                <div style="font-size: 1.5rem; flex-shrink: 0;">✅</div>
+                                <div>
+                                    <strong style="font-size: 1.1rem;">Custom 90-Day AI Implementation Roadmap</strong>
+                                    <div style="font-size: 0.95rem; opacity: 0.9; margin-top: 5px;">Prioritized action plan showing exactly what to implement first, second, third—with realistic timelines</div>
+                                    <div style="font-size: 0.85rem; color: var(--ranch-tan); margin-top: 3px;">Value: $1,500</div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; align-items: start; gap: 15px;">
+                                <div style="font-size: 1.5rem; flex-shrink: 0;">✅</div>
+                                <div>
+                                    <strong style="font-size: 1.1rem;">Specific AI Tool Recommendations</strong>
+                                    <div style="font-size: 0.95rem; opacity: 0.9; margin-top: 5px;">I'll tell you the exact tools to use for your business (not generic advice—specific to YOUR operation)</div>
+                                    <div style="font-size: 0.85rem; color: var(--ranch-tan); margin-top: 3px;">Value: $800</div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; align-items: start; gap: 15px;">
+                                <div style="font-size: 1.5rem; flex-shrink: 0;">✅</div>
+                                <div>
+                                    <strong style="font-size: 1.1rem;">ROI Projections & Investment Breakdown</strong>
+                                    <div style="font-size: 0.95rem; opacity: 0.9; margin-top: 5px;">Know exactly what each AI tool will cost and what return to expect (time saved + revenue impact)</div>
+                                    <div style="font-size: 0.85rem; color: var(--ranch-tan); margin-top: 3px;">Value: $400</div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; align-items: start; gap: 15px;">
+                                <div style="font-size: 1.5rem; flex-shrink: 0;">✅</div>
+                                <div>
+                                    <strong style="font-size: 1.1rem;">Quick-Win AI Implementation (Week 1 Action Items)</strong>
+                                    <div style="font-size: 0.95rem; opacity: 0.9; margin-top: 5px;">Walk away with 2-3 AI tools you can set up THIS WEEK to see immediate results</div>
+                                    <div style="font-size: 0.85rem; color: var(--ranch-tan); margin-top: 3px;">Value: $600</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="border-top: 2px solid var(--ranch-tan); margin: 25px 0; padding-top: 20px; text-align: center;">
+                            <div style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 8px;">TOTAL VALUE:</div>
+                            <div style="font-size: 2.5rem; font-weight: 700; color: var(--ranch-tan); text-decoration: line-through; opacity: 0.7;">$3,800</div>
+                            <div style="font-size: 1.2rem; margin-top: 10px; margin-bottom: 8px;">YOUR INVESTMENT TODAY:</div>
+                            <div style="font-size: 3.5rem; font-weight: 700; color: white; line-height: 1;">$0</div>
+                            <div style="font-size: 1rem; margin-top: 5px; opacity: 0.9;">Completely Free. No Credit Card. No Catch.</div>
+                        </div>
+                    </div>
+
+                    <div style="background: #2A2520; padding: 25px; border-radius: 8px; margin: 25px 0; border-left: 4px solid var(--ranch-rust);">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                            <span style="font-size: 2rem;">⚡</span>
+                            <strong style="font-size: 1.3rem; color: white;">My Guarantee To You:</strong>
+                        </div>
+                        <p style="line-height: 1.7; margin-left: 44px; color: white; opacity: 0.95;">
+                            If I can't show you <strong>at least 3 specific ways</strong> to use AI that will save you 10+ hours per week 
+                            or help you close more jobs—I'll personally Venmo you <strong>$100 for wasting your time.</strong>
+                        </p>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 35px;">
+                        <button class="btn btn-cta-primary" onclick="window.location.href='https://calendly.com/dallin-wardrop-vpij/30min'" style="font-size: 1.5rem; padding: 28px 60px; text-transform: none;">
+                            Claim My Free AI Strategy Session <span class="arrow">→</span>
+                        </button>
+                        <div style="margin-top: 18px; font-size: 1rem; opacity: 0.9; font-weight: 600;">
+                            ⏰ <span style="color: var(--ranch-rust);">Limited:</span> Only 12 spots per week available
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 6px;">
+                        <div style="font-size: 0.95rem; line-height: 1.6; opacity: 0.85;">
+                            <strong>Why am I doing this for free?</strong> Simple: I'm building Service Ranch to be THE go-to AI 
+                            implementation partner for landscaping companies. I need case studies and testimonials. You need AI expertise. 
+                            Win-win. But I can only work with businesses that are serious about implementation—not tire-kickers.
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('results').innerHTML = resultsHTML;
+            document.getElementById('results').classList.remove('hidden');
+
+            // Scroll to top of results
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Show sticky CTA bar when user scrolls down
+            setTimeout(() => {
+                window.addEventListener('scroll', function showStickyCTA() {
+                    const scrolled = window.scrollY > 300;
+                    const stickyCTA = document.getElementById('sticky-cta');
+                    if (scrolled) {
+                        stickyCTA.classList.add('show');
+                    } else {
+                        stickyCTA.classList.remove('show');
+                    }
+                });
+            }, 1000);
+
+            // Log results (in production, send to your backend)
+            console.log('Assessment Complete', {
+                email: userEmail,
+                score: totalScore,
+                rating: rating,
+                answers: answers,
+                categoryScores: categoryScores
+            });
+        }
+    </script>
+</body>
+</html>
